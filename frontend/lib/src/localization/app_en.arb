@@ -1,0 +1,6 @@
+{
+  "appTitle": "Link List",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}

@@ -1,0 +1,788 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "LinkList Service",
+    "description": "LinkList Service API to serve links and categories",
+    "contact": {
+      "name": "Andreas Lange",
+      "email": "andreas@cfapps.cool"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "<https://opensource.org/license/mit/>"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "localhost dev"
+    },
+    {
+      "url": "https://linklist.cfapps.cool",
+      "description": "prod environment"
+    }
+  ],
+  "tags": [
+    {
+      "name": "category-controller",
+      "description": "V1"
+    },
+    {
+      "name": "link-controller",
+      "description": "V1"
+    }
+  ],
+  "paths": {
+    "/api/v1/links/{id}": {
+      "put": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLinkDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/categories/{id}": {
+      "put": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Updates a category by id and its new title",
+        "description": "Updates a category by id and its new title",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The category id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDto"
+              },
+              "examples": {
+                "selected category": {
+                  "description": "selected category",
+                  "value": {
+                    "id": "2",
+                    "title": "Version Controls"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "content-length": {
+                "description": "The content length of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "content-type": {
+                "description": "The content type of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "application/json"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                },
+                "examples": {
+                  "selected category": {
+                    "description": "selected category",
+                    "value": {
+                      "id": "2",
+                      "title": "Version Controls"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not Found",
+            "headers": {
+              "content-length": {
+                "description": "On Error: The content length is 0",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Delete a category by id",
+        "description": "Delete a category by id if it is empty",
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The category id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/links": {
+      "get": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "getAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLinkDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Retrieves all categories",
+        "description": "Retrieves all categories",
+        "operationId": "getAll_1",
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "headers": {
+              "transfer-encoding": {
+                "description": "indicates that the response is chunked",
+                "style": "simple",
+                "schema": {
+                  "type": "chunked"
+                }
+              },
+              "content-type": {
+                "description": "The content type of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "application/json"
+                }
+              }
+            },
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                },
+                "examples": {
+                  "Success": {
+                    "description": "Success",
+                    "value": [
+                      {
+                        "id": "1",
+                        "title": "General"
+                      },
+                      {
+                        "id": "2",
+                        "title": "Version Control"
+                      },
+                      {
+                        "id": "3",
+                        "title": "Languages and Frameworks"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Creates a category with a given title",
+        "description": "Updates a category by id and its new title",
+        "operationId": "create_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              },
+              "examples": {
+                "selected category": {
+                  "description": "selected category",
+                  "value": {
+                    "title": "CI/CD Tools"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "content-length": {
+                "description": "The content length of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "content-type": {
+                "description": "The content type of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "application/json"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                },
+                "examples": {
+                  "selected category": {
+                    "description": "selected category",
+                    "value": {
+                      "id": "5",
+                      "title": "CI/CD Tools"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/links/byTitle/{title}": {
+      "get": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "getByCategory",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/links/byId/{id}": {
+      "get": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/links/byCategory/{id}": {
+      "get": {
+        "tags": [
+          "link-controller"
+        ],
+        "operationId": "getByCategory_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/cached": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getAllFromCache",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/byTitle/{title}": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Retrieves a category by title",
+        "description": "Retrieves a category by title",
+        "operationId": "getByTitle",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "description": "The category title",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "General"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "content-length": {
+                "description": "The content length of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "content-type": {
+                "description": "The content type of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "application/json"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                },
+                "examples": {
+                  "selected category": {
+                    "description": "selected category",
+                    "value": [
+                      {
+                        "id": "1",
+                        "title": "General"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not Found",
+            "headers": {
+              "content-length": {
+                "description": "On Error: The content length is 0",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/byId/{id}": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "Retrieves a category by id",
+        "description": "Retrieves a category by id",
+        "operationId": "getById_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The category id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "content-length": {
+                "description": "The content length of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "content-type": {
+                "description": "The content type of the response",
+                "style": "simple",
+                "schema": {
+                  "type": "application/json"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                },
+                "examples": {
+                  "selected category": {
+                    "description": "selected category",
+                    "value": {
+                      "id": "2",
+                      "title": "Version Control"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not Found",
+            "headers": {
+              "content-length": {
+                "description": "On Error: The content length is 0",
+                "style": "simple",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UpdateLinkDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "category": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "support": {
+            "type": "boolean"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "LinkDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "category": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "support": {
+            "type": "boolean"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "likes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dislikes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "categoryTitle": {
+            "type": "string"
+          }
+        }
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateLinkDto": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "support": {
+            "type": "boolean"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
