@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'core/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
+import 'features/settings/settings_controller.dart';
+import 'features/settings/settings_service.dart';
 import 'core/services/locator.dart';
 
 void main() async {

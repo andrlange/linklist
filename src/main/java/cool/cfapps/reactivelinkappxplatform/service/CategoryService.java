@@ -63,12 +63,18 @@ public class CategoryService {
 
     public Mono<CategoryDto> updateCategory(long id, Mono<CategoryDto> categoryDto) {
         cacheOutdated = true;
+        categoryCache.removeIf(c -> c.getId() == id);
+
         return categoryRepository.findById(id)
                 .flatMap(u -> categoryDto
                         .map(EntityDtoUtil::toEntity)
                         .doOnNext(category -> category.setId(id))
                         .flatMap(categoryRepository::save)
-                        .map(EntityDtoUtil::toDto));
+                        .map(EntityDtoUtil::toDto)
+                        .map(dto -> {
+                            categoryCache.add(dto);
+                            return dto;
+                        }));
     }
 
     public Mono<Void> deleteCategory(long id) {
@@ -104,6 +110,7 @@ public class CategoryService {
     }
 
     public String getCategoryTitleById(long id) {
+
         if (categoryCache.stream().anyMatch(c -> c.getId() == id)) {
             List<CategoryDto> cl = categoryCache.stream()
                     .filter(c -> c.getId() == id).toList();
@@ -115,6 +122,7 @@ public class CategoryService {
     }
 
     public Flux<CategoryDto> getAllFromCache() {
+        if(cacheOutdated) return findAll();
         List<CategoryDto> copy = List.copyOf(categoryCache);
         return Flux.fromStream(copy.stream());
     }

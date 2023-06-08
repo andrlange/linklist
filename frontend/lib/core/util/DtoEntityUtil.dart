@@ -1,3 +1,5 @@
+import 'package:frontend/features/linklist/domain/entities/CategoryEntity.dart';
+
 import '../../features/linklist/domain/entities/LinkEntity.dart';
 import '../../generated/api/BackendService.swagger.dart';
 
@@ -16,6 +18,13 @@ class DtoEntityUtil {
       image: dto.image ?? "",
       support: dto.support ?? false,
       categoryTitle: dto.categoryTitle ?? "",
+    );
+  }
+
+  static CategoryDto entityToDto(CategoryEntity entity) {
+    return CategoryDto(
+      id: entity.index,
+      title: entity.title,
     );
   }
 }

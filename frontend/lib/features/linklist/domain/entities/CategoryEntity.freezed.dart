@@ -20,7 +20,7 @@ CategoryEntity _$CategoryEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CategoryEntity {
-  BigInt get index => throw _privateConstructorUsedError;
+  int get index => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +35,7 @@ abstract class $CategoryEntityCopyWith<$Res> {
           CategoryEntity value, $Res Function(CategoryEntity) then) =
       _$CategoryEntityCopyWithImpl<$Res, CategoryEntity>;
   @useResult
-  $Res call({BigInt index, String title});
+  $Res call({int index, String title});
 }
 
 /// @nodoc
@@ -58,7 +58,7 @@ class _$CategoryEntityCopyWithImpl<$Res, $Val extends CategoryEntity>
       index: null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as BigInt,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,7 @@ abstract class _$$_CategoryEntityCopyWith<$Res>
       __$$_CategoryEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({BigInt index, String title});
+  $Res call({int index, String title});
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class __$$_CategoryEntityCopyWithImpl<$Res>
       index: null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as BigInt,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -114,7 +114,7 @@ class _$_CategoryEntity implements _CategoryEntity {
       _$$_CategoryEntityFromJson(json);
 
   @override
-  final BigInt index;
+  final int index;
   @override
   final String title;
 
@@ -152,14 +152,14 @@ class _$_CategoryEntity implements _CategoryEntity {
 
 abstract class _CategoryEntity implements CategoryEntity {
   const factory _CategoryEntity(
-      {required final BigInt index,
+      {required final int index,
       required final String title}) = _$_CategoryEntity;
 
   factory _CategoryEntity.fromJson(Map<String, dynamic> json) =
       _$_CategoryEntity.fromJson;
 
   @override
-  BigInt get index;
+  int get index;
   @override
   String get title;
   @override

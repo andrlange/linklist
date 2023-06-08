@@ -8,12 +8,12 @@ part of 'CategoryEntity.dart';
 
 _$_CategoryEntity _$$_CategoryEntityFromJson(Map<String, dynamic> json) =>
     _$_CategoryEntity(
-      index: BigInt.parse(json['index'] as String),
+      index: json['index'] as int,
       title: json['title'] as String,
     );
 
 Map<String, dynamic> _$$_CategoryEntityToJson(_$_CategoryEntity instance) =>
     <String, dynamic>{
-      'index': instance.index.toString(),
+      'index': instance.index,
       'title': instance.title,
     };
